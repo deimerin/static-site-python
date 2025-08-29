@@ -1,5 +1,3 @@
-from enum import Enum
-
 class HTMLNode:
 
     def __init__(self, tag=None, value=None, children=None, props=None):
@@ -29,13 +27,11 @@ class LeafNode(HTMLNode):
         super().__init__(tag, value, None, props)
 
     def to_html(self):
-        if not self.value:
+        if self.value is None:
             raise ValueError
         if not self.tag:
-            return self.value
-        
+            return self.value    
         return f"<{self.tag}{' '+self.props_to_html() if self.props else ""}>{self.value}</{self.tag}>"
-    
 
 class ParentNode(HTMLNode):
 
@@ -43,9 +39,9 @@ class ParentNode(HTMLNode):
         super().__init__(tag, None, children, props)
 
     def to_html(self):
-        if not self.tag:
+        if self.tag is None:
             raise ValueError("No tag")
-        if not self.children:
+        if self.children is None:
             raise ValueError("No children")
         
         return f'<{self.tag}{" "+self.props_to_html() if self.props else ""}>{"".join(child.to_html() for child in self.children)}</{self.tag}>'

@@ -1,6 +1,6 @@
 import unittest
 
-from extract_markdown import extract_markdown_images, extract_markdown_links
+from extract_markdown import extract_markdown_images, extract_markdown_links, extract_title
 
 class TestExtractMarkdown(unittest.TestCase):
     
@@ -40,3 +40,35 @@ class TestExtractMarkdown(unittest.TestCase):
 
         self.assertEqual(extract_markdown_images(mx2), [("img1", "url1.jpg"), ("img2", "url2.png")])
         self.assertEqual(extract_markdown_links(mx3), [("link", "site.com")])
+
+
+    def test_extract_title(self):
+        # Single title at the start
+        md1 = "# My Title\nSome content here."
+        self.assertEqual(extract_title(md1), "My Title")
+
+        # Title with leading/trailing spaces
+        md2 = "#    Another Title   \nMore text."
+        self.assertEqual(extract_title(md2), "Another Title")
+
+        # Multiple titles in the markdown
+        md3 = "# First Title\nSome text\n## Second Title\nMore text"
+        self.assertEqual(extract_title(md3), "First Title")
+
+        # Title not at the beginning
+        md4 = "Intro text\n# Title After Text\nContent"
+        self.assertEqual(extract_title(md4), "Title After Text")
+
+        # No title present should raise Exception
+        md5 = "No title here\nJust text"
+        with self.assertRaises(Exception):
+            extract_title(md5)
+
+        # Title with special characters
+        md6 = "# T!t1e @ 2024\nContent"
+        self.assertEqual(extract_title(md6), "T!t1e @ 2024")
+
+        # Title with only hash and space
+        md7 = "# \nContent"
+        self.assertEqual(extract_title(md7), "")
+        
