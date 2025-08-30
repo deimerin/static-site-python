@@ -29,8 +29,16 @@ def generate_page(from_path, template_path, dest_path, basepath):
     
     template_content =  template_content.replace("{{ Title }}", page_title)
     template_content =  template_content.replace("{{ Content }}", html_node)
+    
+    #print(f'DEBUG: basepath = {basepath}')
+    #old_template = template_content
+    #print(f"DEBUG: template before replacement contains: {template_content.count('href=\"/')}")
+
     template_content =  template_content.replace('href="/', 'href="' + basepath)
     template_content =  template_content.replace('src="/', 'src="' + basepath)
+
+    #print(f"DEBUG: replacement changed template: {old_template != template_content}")
+    #print(f"DEBUG: template after replacement contains: {template_content.count('href=\"/')}")
 
     # Make new html file in the dest_path
     directory = os.path.dirname(dest_path)
