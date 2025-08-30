@@ -1,11 +1,18 @@
 import os
 import shutil
 import sys
+
 from generate_page import generate_pages_recursive
 
 def main():
-    initiate_public_folder('static', 'public')
-    generate_pages_recursive('content/', 'template.html', 'public/')
+
+    basepath = '/'
+
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+
+    initiate_public_folder('static', 'docs')
+    generate_pages_recursive('content/', 'template.html', 'docs/', basepath)
 
 
 
